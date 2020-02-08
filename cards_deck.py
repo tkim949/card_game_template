@@ -1,38 +1,98 @@
 from os import path
+import random
+
+
+class Card:
+    """
+    To be used with the pygame template
+    """
+
+    def __init__(self, suit, rank, imgs_path=None):
+        """
+
+        :param suit: string or char to identify the suit
+        :param rank: integer from 1 - 13 (ace = 1), or 2-14 (ace = 14)
+        :param imgs_path: path of the top folder where cards are saved.
+            [WARNING] card names must follow the convention: [suit:'h','c','d','s','j'=joker][rank: 1-13]
+            ex: ca = clubs Ace, j1 = joker 1
+        """
+        self.suit = suit
+        self.rank = rank
+        # set up path for card image
+        if imgs_path is not None:
+            if rank == 1 or rank == 14:  # set Ace
+                self.img = path.join(imgs_path, suit + '1' + '.png')
+            else:
+                self.img = path.join(imgs_path, suit + str(rank) + '.png')
+
+    def get_name(self):
+        return self.suit + str(self.rank)
+
+    def get_img(self):
+        return self.img
+
+    def get_suit(self):
+        return self.suit
+
+    def get_rank(self):
+        return self.rank
 
 
 class DeckOfCards:
     """
-    todo: write docstring
+    to be used with pygame template
     """
-    def __init__(self, imgs_path, ace_high, deck_count, joker_count, joker_value=0):
-        # cards is a dictionary of tuples --> {card: (path, value)}
-        self.cards = {}
+
+    def __init__(self, imgs_path, ace_high=False, joker_count=0, joker_value=0):
+        self.cards = []
         for i in range(joker_count):
-            suit = 'j'  # jokers will be referenced as j1, j2...
-            self.cards[suit + str(i+1)] = (path.join(imgs_path, suit + str(i+1) + '.png'), joker_value)
+            # j suit will be used for jokers, referenced as j1, j2...
+            self.cards.append(Card('j', i, imgs_path, joker_value))
 
-        for suit in ['c','d','h','s']:
+        for suit in ['c', 'd', 'h', 's']:
             for rank in range(1, 14):
-                # each card is tuple(path, value). todo: custom values
-                if rank == 1 and ace_high == True:
-                    self.cards[suit + str(rank)] = (path.join(imgs_path, suit + str(rank) + '.png'), 14)
+                if rank == 1 and ace_high:
+                    self.cards.append(Card(suit, 14, imgs_path))
                 else:
-                    self.cards[suit + str(rank)] = (path.join(imgs_path, suit + str(rank) + '.png'), rank)
+                    self.cards.append(Card(suit, rank, imgs_path))
 
-    def shuffled_deck(self):
+    def get_a_deck(self):
+        return self.cards
+
+    def shuffled_deck(self, count=1):
         """
 
+        :param count: how many decks to return
         :return: list: shuffled deck(s) of cards
         """
+        rtn = []
+        for i in range(count):
+            rtn.extend(random.sample(self.cards, len(self.cards)))
+
+        return rtn
+
+    # [sm] maybe this should be done at the game level, just use this class to create deck
+    def deal_hand(self, qty):
         pass
 
 
 # ### TESTING ###
 if __name__ == '__main__':
     # using current dir path
-    tester = DeckOfCards(path.dirname(path.abspath(__file__)), True, 1, 1)
-    for i in tester.cards:
-        print(i,': ',tester.cards[i][0], tester.cards[i][1])
-
-    print(type(tester.cards['j1']))
+    # tester = DeckOfCards(path.dirname(path.abspath(__file__)), True, 1, 1)
+    # for i in tester.cards:
+    #     print(i,': ',tester.cards[i][0], tester.cards[i][1])
+    #
+    # print(type(tester.cards['j1']))
+    #
+    # bunch = []
+    # bunch.append(Card('s', 9, path.dirname(path.abspath(__file__))))
+    # print(bunch[0].img)
+    # # ace = Card('s',14,path.dirname(path.abspath(__file__)))
+    # # print(ace.img)
+    # # print(ace.rank)
+    adeck = DeckOfCards(path.dirname(path.abspath(__file__)), True)
+    adeck = adeck.shuffled_deck()
+    print(len(adeck))
+    for crd in adeck:
+        print(crd.get_name(), '|', crd.get_rank(), '|', crd.get_img())
