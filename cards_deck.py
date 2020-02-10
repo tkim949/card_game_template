@@ -1,4 +1,5 @@
 from os import path
+from pygame import image
 import random
 
 
@@ -21,9 +22,9 @@ class Card:
         # set up path for card image
         if imgs_path is not None:
             if rank == 1 or rank == 14:  # set Ace
-                self.img = path.join(imgs_path, suit + '1' + '.png')
+                self.img = image.load(path.join(imgs_path, suit + '1' + '.png'))
             else:
-                self.img = path.join(imgs_path, suit + str(rank) + '.png')
+                self.img = image.load(path.join(imgs_path, suit + str(rank) + '.png'))
 
     def get_name(self):
         return self.suit + str(self.rank)
@@ -40,7 +41,8 @@ class Card:
 
 class DeckOfCards:
     """
-    to be used with pygame template
+    to be used with pygame template. Deck of cards only needs to be setup once per game.
+    decks can then be retrieved as needed.
     """
 
     def __init__(self, imgs_path, ace_high=False, joker_count=0, joker_value=0):
@@ -91,8 +93,8 @@ if __name__ == '__main__':
     # # ace = Card('s',14,path.dirname(path.abspath(__file__)))
     # # print(ace.img)
     # # print(ace.rank)
-    adeck = DeckOfCards(path.dirname(path.abspath(__file__)), True)
+    adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards'), True)
     adeck = adeck.shuffled_deck()
     print(len(adeck))
     for crd in adeck:
-        print(crd.get_name(), '|', crd.get_rank(), '|', crd.get_img())
+        print(crd.get_name(), '|', crd.get_rank(),type(crd.get_img()))
