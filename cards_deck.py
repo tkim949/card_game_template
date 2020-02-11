@@ -52,9 +52,9 @@ class DeckOfCards:
             self.cards.append(Card('j', i, imgs_path, joker_value))
 
         for suit in ['c', 'd', 'h', 's']:
-            for rank in range(1, 14):
+            for rank in range(1, 13):
                 if rank == 1 and ace_high:
-                    self.cards.append(Card(suit, 14, imgs_path))
+                    self.cards.append(Card(suit, 13, imgs_path))
                 else:
                     self.cards.append(Card(suit, rank, imgs_path))
 
