@@ -18,7 +18,7 @@ pygame.mixer.init()  # for sound
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption('Card Game')
 clock = pygame.time.Clock()
-adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards'), True)
+adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards/cardO'), True)
 adeck = adeck.shuffled_deck()
 # card_j = adeck[0].get_img()
 card = pygame.transform.scale(adeck[0].get_img(), (105,143))
