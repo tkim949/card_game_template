@@ -30,6 +30,7 @@ pygame.display.set_caption('Card Game')
 clock = pygame.time.Clock()
 '''
 https://pythonprogramming.net/
+https://kidscancode.org/
 https://www.pygame.org/docs/ref/mouse.html
 https://www.programcreek.com/python/example/6517/pygame.MOUSEBUTTONDOWN
 '''
