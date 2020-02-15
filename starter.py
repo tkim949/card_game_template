@@ -1,12 +1,11 @@
 from cards_deck import *
-
+import pygame
 
 """
 Skeleton for a new pygame
 """
 
-import pygame
-import random
+
 
 SIZE = WIDTH, HEIGHT = 800, 600
 FPS = 5
