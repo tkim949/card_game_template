@@ -15,7 +15,7 @@ class Card:
         :param rank: integer from 1 - 13 (ace = 1), or 2-14 (ace = 14)
         :param imgs_path: path of the top folder where cards are saved.
             [WARNING] card names must follow the convention: [suit:'h','c','d','s','j'=joker][rank: 1-13]
-            ex: ca = clubs Ace, j1 = joker 1
+            ex: c1 = clubs Ace, j1 = joker 1
         """
         self.suit = suit
         self.rank = rank
@@ -93,8 +93,8 @@ if __name__ == '__main__':
     # # ace = Card('s',14,path.dirname(path.abspath(__file__)))
     # # print(ace.img)
     # # print(ace.rank)
-    adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards'), True)
+    adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards'), False)
     adeck = adeck.shuffled_deck()
     print(len(adeck))
     for crd in adeck:
-        print(crd.get_name(), '|', crd.get_rank(),type(crd.get_img()))
+        print(crd.get_name(), '|', crd.get_rank(), '|', crd.get_img())
