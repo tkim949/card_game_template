@@ -1,7 +1,5 @@
 from cards_deck import *
 import pygame
-<<<<<<< HEAD
-=======
 import random
 from pathlib import Path
 from os import path
@@ -9,16 +7,9 @@ from pygame.locals import*
 import time
 img_dir = path.join(path.dirname(__file__), 'Cards')
 
->>>>>>> MiltonTK
-
 """
 Skeleton for a new pygame
 """
-
-<<<<<<< HEAD
-
-=======
->>>>>>> MiltonTK
 
 SIZE = WIDTH, HEIGHT = 800, 600
 FPS = 5

@@ -93,11 +93,11 @@ if __name__ == '__main__':
     # # ace = Card('s',14,path.dirname(path.abspath(__file__)))
     # # print(ace.img)
     # # print(ace.rank)
-<<<<<<< HEAD
-    adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards'), False)
-=======
+
+   # adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards'), False)
+
     adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards/cardO'), True)
->>>>>>> MiltonTK
+
     adeck = adeck.shuffled_deck()
     print(len(adeck))
     for crd in adeck:
