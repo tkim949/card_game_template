@@ -162,6 +162,6 @@ while running:
     pygame.draw.rect(screen, (0, 0, 0), (hand_left, hand_top, 75, 105), 3)
 """
 
-
+## Kaylin is trying to properly connect github to pycharm
 
 pygame.quit()
