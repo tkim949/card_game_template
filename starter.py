@@ -38,6 +38,11 @@ https://www.programcreek.com/python/example/6517/pygame.MOUSEBUTTONDOWN
 modernImg = pygame.image.load("Cards/cardO/h13.png").convert()
 classicImg = pygame.image.load("Cards/cardN/h13.png").convert()
 
+# Refactoring from card_choose() and now I can use this for other texts also!!!
+def makeText(text, font):
+    textSurface = font.render(text, True, BLACK)
+    return textSurface, textSurface.get_rect()
+
 # use mouse and click!
 def button(x_cood, y_cood, wdt, height, colO, colC, action=None):
     #global cardImgP
@@ -68,8 +73,9 @@ def card_choose():
         screen.fill(GREEN)
 
         dictText = pygame.font.SysFont("comicsansms", 70)
-        TextSurf = dictText.render("Choose Your Card!", True, BLACK)
-        TextRect = TextSurf.get_rect()
+        TextSurf, TextRect = makeText("Choose Your Card!", dictText)
+        #TextSurf = dictText.render("Choose Your Card!", True, BLACK)
+        #TextRect = TextSurf.get_rect()
         TextRect.move_ip(150, 100)
         screen.blit(TextSurf, TextRect)
         screen.blit(modernImg, (150, 200))
