@@ -1,0 +1,7 @@
+1. Choose Game
+2. Play Game
+3. Choose Background
+4. Pick Music (placeholder)
+5. Create New Game (placeholder)
+6. Load Game to Edit (placeholder)
+7. Quit
