@@ -22,9 +22,9 @@ class Card:
         # set up path for card image
         if imgs_path is not None:
             if rank == 1 or rank == 14:  # set Ace
-                self.img = image.load(path.join(imgs_path, suit + '1' + '.png'))
+                self.img = image.load(path.join(imgs_path, suit + '1' + '.png')).convert()
             else:
-                self.img = image.load(path.join(imgs_path, suit + str(rank) + '.png'))
+                self.img = image.load(path.join(imgs_path, suit + str(rank) + '.png')).convert()
 
     def get_name(self):
         return self.suit + str(self.rank)

@@ -1,11 +1,12 @@
 from cards_deck import *
 import pygame
-import random
-from pathlib import Path
+# import random
+# from pathlib import Path
 from os import path
-from pygame.locals import*
-import time
+# from pygame.locals import*
+# import time
 from pygame import mixer
+
 img_dir = path.join(path.dirname(__file__), 'Cards')
 
 """
