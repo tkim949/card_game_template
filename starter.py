@@ -185,6 +185,7 @@ def card_choose():
 
 # for the path to the modern card
 def path1():
+    print('pt1')
     adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards/cardO'), True)
     pickSound = mixer.Sound("Blip_Select72.wav")
     pickSound.play()
@@ -253,6 +254,7 @@ def play():
         clock.tick(60)
 
 #pygame.quit()
+print("AT MUSIC CHOOSE!")
 music_choose()
 # card_choose()
 #play()

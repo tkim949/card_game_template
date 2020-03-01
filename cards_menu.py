@@ -231,20 +231,20 @@ while running:
 	elif (game_state == 7):
 		print("Quiting game")
 		quit()
- 
-    # Wait for input
+
+# Wait for input
 
 
-    # Game logic
-    # Win logic
-    # Lose logic
-    # menu logic
+# Game logic
+# Win logic
+# Lose logic
+# menu logic
 
-    # Render
+# Render
 
-    # Background color
-	set_game_background()
+# Background color
+# set_game_background()
 
 
-    # Refresh (after draw)
-	pygame.display.flip()
+# Refresh (after draw)
+# pygame.display.flip()
