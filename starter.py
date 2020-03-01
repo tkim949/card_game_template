@@ -231,6 +231,8 @@ def play():
                 mixer.music.load('bensound-energy.wav')
             elif choose == 3:
                 mixer.music.load('bensound-perception.wav')
+            else:
+                mixer.music.load('bensound-sweet.wav')
             mixer.music.play(-1)
 
             if event.type == pygame.QUIT:
