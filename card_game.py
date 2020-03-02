@@ -1,7 +1,6 @@
 import pygame
 from pygame import mixer
-import os
-# from os import path
+from os import path
 from cards_deck import *
 
 '''
@@ -13,13 +12,13 @@ https://www.programcreek.com/python/example/6517/pygame.MOUSEBUTTONDOWN
 '''
 
 """
-project scope variables
+Global Variables
 """
-__file__ = os.path.abspath(__file__)
+__file__ = path.abspath(__file__)
 SIZE = WIDTH, HEIGHT = 800, 600
 FPS = 10
 GREENDARK = (0, 255, 0)
-# BLUE = (0, 0, 255)
+PURE_BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (28, 210, 28)
@@ -27,15 +26,20 @@ BLUE = (173, 216, 230)
 RED = (255, 144, 144)
 
 # set paths to game folder / directory
-game_path = os.path.dirname(__file__)
+game_path = path.dirname(__file__)
 # direct 'backgrounds' folder path
-bkg_path = os.path.join(game_path, "backgrounds")
-menu_path = os.path.join(game_path, "menu")
+bkg_path = path.join(game_path, "backgrounds")
+menu_path = path.join(game_path, "menu")
+
+# for placing cards on the screen, and ability to move via sprite class
+all_sprites = pygame.sprite.Group()
+card_spacing = 25
+cards = []
 
 # initialize and create window
 pygame.init()
 pygame.mixer.init()  # sound stuff
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Awesome Card Game")
 clock = pygame.time.Clock()
 
@@ -43,11 +47,13 @@ clock = pygame.time.Clock()
 modernImg = pygame.image.load("Cards/cardO/h13.png").convert()
 classicImg = pygame.image.load("Cards/cardN/h13.png").convert()
 
+choose = 0  # used in music_choose()
+
 """
 SECTION A: Menu
 """
-solid_color_choice = WHITE
-background_image_choice = False
+solid_color_choice = GREEN  # default
+background_image_choice = False  # default to start
 
 # Font definitions
 font_size = 36
@@ -97,8 +103,6 @@ def display_menu(menu_file):
     menuTextSurf = font.render("menu display", True, font_color)
     menuTextRect = menuTextSurf.get_rect()
 
-    # make loop
-    # print("running menu")
     while menu_on:
         for event in pygame.event.get():
             # Quit option
@@ -142,8 +146,6 @@ def display_menu(menu_file):
         pygame.display.flip()
         clock.tick(FPS)
 
-    # Menu Reaction to key strokes
-
 
 def set_background_solid():
     global solid_color_choice
@@ -152,7 +154,7 @@ def set_background_solid():
     # 2. Green
     # 3. Blue
     # 4. Red
-    solid_background_choice = display_menu(os.path.join(menu_path, "background_solid_choices.txt"))
+    solid_background_choice = display_menu(path.join(menu_path, "background_solid_choices.txt"))
 
     if (solid_background_choice == 1):
         solid_color_choice = WHITE
@@ -176,17 +178,17 @@ def set_background_artwork():
     # 1. Cave
     # 2. Space
     # 3. Viking
-    artwork_background_choice = display_menu(os.path.join(menu_path, "background_artwork_choices.txt"))
+    artwork_background_choice = display_menu(path.join(menu_path, "background_artwork_choices.txt"))
 
     if (artwork_background_choice == 1):
         # if the choice is campfire
-        background_image_choice = pygame.image.load(os.path.join(bkg_path, "campfire.png")).convert()
+        background_image_choice = pygame.image.load(path.join(bkg_path, "campfire.png")).convert()
     elif (artwork_background_choice == 2):
         # if the choice is space
-        background_image_choice = pygame.image.load(os.path.join(bkg_path, "space.jpg")).convert()
+        background_image_choice = pygame.image.load(path.join(bkg_path, "space.jpg")).convert()
     elif (artwork_background_choice == 3):
         # if the choice is vikings
-        background_image_choice = pygame.image.load(os.path.join(bkg_path, "vikings.png")).convert()
+        background_image_choice = pygame.image.load(path.join(bkg_path, "vikings.png")).convert()
 
     print(background_image_choice)
 
@@ -267,9 +269,6 @@ class buttonM():
         return False
 
 
-choose = 0
-
-
 def music_choose():
     run = True
     music1 = buttonM((GREENDARK), 150, 100, 250, 100, 'Adventure')
@@ -278,7 +277,7 @@ def music_choose():
 
     while run:
         global choose
-        screen.fill(GREEN)
+        set_game_background()
         dictText1 = pygame.font.SysFont("comicsansms", 40)
         Textsurf, Textrect = makeText("Choose Your Music!", dictText1)
         Textrect.move_ip(150, 50)
@@ -323,13 +322,25 @@ def music_choose():
                 if music1.isClick(mouse1) or music2.isClick(mouse1) or music3.isClick(mouse1):
                     pickSound = mixer.Sound("Pickup_Coin100.wav")
                     pickSound.play()
-                    # card_choose()
                     run = False
 
 
 """
 SECTION C: Card layout
 """
+
+
+class CardSprite(pygame.sprite.Sprite):
+    def __init__(self, img, pos):
+        """
+
+        :param img:
+        :param pos: horizontal point for the bottom left corner of a card
+        """
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.bottomright = pos
 
 
 # Refactoring from card_choose() and now I can use this for other texts also!!!
@@ -364,12 +375,10 @@ def card_choose():
                 pygame.quit()
                 quit()
 
-        screen.fill(GREEN)
+        set_game_background()
 
         dictText = pygame.font.SysFont("comicsansms", 70)
         TextSurf, TextRect = makeText("Choose Your Card!", dictText)
-        # TextSurf = dictText.render("Choose Your Card!", True, BLACK)
-        # TextRect = TextSurf.get_rect()
         TextRect.move_ip(150, 100)
         screen.blit(TextSurf, TextRect)
         screen.blit(modernImg, (150, 200))
@@ -398,20 +407,22 @@ def path2():
     createDeck(adeck)
 
 
-cards = []
-
-
 # create deck. you can change the number of cards by changing the range.
 def createDeck(adeck):
     adeck = adeck.shuffled_deck()
-    # card_j = adeck[0].get_img()
-    for c in range(0, 5):
+    for c in range(0, 50):
         cards.append(pygame.transform.scale(adeck[c].get_img(), (105, 143)))
-    # cards.append(pygame.transform.scale(adeck[1].get_img(), (105, 143)))
-    # cards.append(pygame.transform.scale(adeck[2].get_img(), (105, 143)))
 
     play()  # starts the game
     return adeck
+
+
+def place_user_card(count):
+    start = (count // 2) * card_spacing
+    print('start wid:', start)
+    for i in range(count):
+        card_offset = (WIDTH / 2) + (start + (card_spacing * i))
+        all_sprites.add(CardSprite(cards[i], (card_offset, 550)))
 
 
 def play():
@@ -421,37 +432,40 @@ def play():
      pressing the close window button brings it back to main screen
     """
     running = True
+    place_user_card(5)
 
     while running:
         # keep loop running at the right speed
         clock.tick(FPS)
-        # A) Process input (events)
 
+        # A) Process input (events)
         for event in pygame.event.get():
             # check for closing window
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for card in all_sprites:
+                    if card.rect.collidepoint(event.pos):
+                        card.rect.center = WIDTH // 2, HEIGHT // 2
+                        break
 
         # B) Update
+        all_sprites.update()
 
         # C) Render
-
-        screen.fill(GREEN)
-
-        for c in range(0, 5):
-            screen.blit(cards[c], (50 + 25 * c, 407))
-        # screen.blit(cards[1], (75, 407))
-        # screen.blit(cards[2], (100, 407))
-        # after rendering everything, flip. must b done last. double buffering
+        set_game_background()
+        all_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
 
 
+"""
+MENU LOOP, runs at the start of the program
+"""
 running = True
 while running:
-    # Display menu
     clock.tick(FPS)
-    game_state = display_menu(os.path.join(menu_path, "menu.txt"))
+    game_state = display_menu(path.join(menu_path, "menu.txt"))
 
     # Games States - MUST align with what is in "menu.txt"
     #	1. Choose Game
@@ -470,7 +484,7 @@ while running:
         card_choose()
     elif (game_state == 3):
         print("choosing background")
-        background_choice = display_menu(os.path.join(menu_path, "background_menu.txt"))
+        background_choice = display_menu(path.join(menu_path, "background_menu.txt"))
         print(background_choice)
         if (background_choice == 1):
             set_background_solid()
@@ -486,20 +500,3 @@ while running:
     elif (game_state == 7):
         print("Quiting game")
         quit()
-
-# Wait for input
-
-quit()
-# Game logic
-# Win logic
-# Lose logic
-# menu logic
-
-# Render
-
-# Background color
-# set_game_background()
-
-
-# Refresh (after draw)
-# pygame.display.flip()
