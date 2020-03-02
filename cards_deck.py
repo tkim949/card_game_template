@@ -22,9 +22,9 @@ class Card:
         # set up path for card image
         if imgs_path is not None:
             if rank == 1 or rank == 14:  # set Ace
-                self.img = image.load(path.join(imgs_path, suit + '1' + '.png'))
+                self.img = image.load(path.join(imgs_path, suit + '1' + '.png')).convert()
             else:
-                self.img = image.load(path.join(imgs_path, suit + str(rank) + '.png'))
+                self.img = image.load(path.join(imgs_path, suit + str(rank) + '.png')).convert()
 
     def get_name(self):
         return self.suit + str(self.rank)
@@ -93,8 +93,12 @@ if __name__ == '__main__':
     # # ace = Card('s',14,path.dirname(path.abspath(__file__)))
     # # print(ace.img)
     # # print(ace.rank)
+
+   # adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards'), False)
+
     adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards/cardO'), True)
+
     adeck = adeck.shuffled_deck()
     print(len(adeck))
     for crd in adeck:
-        print(crd.get_name(), '|', crd.get_rank(),type(crd.get_img()))
+        print(crd.get_name(), '|', crd.get_rank(), '|', crd.get_img())

@@ -1,18 +1,17 @@
 from cards_deck import *
 import pygame
-import random
-from pathlib import Path
+# import random
+# from pathlib import Path
 from os import path
-from pygame.locals import*
-import time
+# from pygame.locals import*
+# import time
 from pygame import mixer
-img_dir = path.join(path.dirname(__file__), 'Cards')
 
+img_dir = path.join(path.dirname(__file__), 'Cards')
 
 """
 Skeleton for a new pygame
 """
-
 
 SIZE = WIDTH, HEIGHT = 800, 600
 FPS = 5
@@ -186,6 +185,7 @@ def card_choose():
 
 # for the path to the modern card
 def path1():
+    print('pt1')
     adeck = DeckOfCards(path.join(path.dirname(path.abspath(__file__)), 'Cards/cardO'), True)
     pickSound = mixer.Sound("Blip_Select72.wav")
     pickSound.play()
@@ -254,6 +254,7 @@ def play():
         clock.tick(60)
 
 #pygame.quit()
+print("AT MUSIC CHOOSE!")
 music_choose()
 # card_choose()
 #play()
