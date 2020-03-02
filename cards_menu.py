@@ -8,10 +8,14 @@ HEIGHT = 600	# height of our game window
 FPS = 30		# frames per second
 
 # set paths to game folder / directory
-game_path = os.path.dirname(__file__)
+main_path = os.path.dirname(__file__)
 # direct 'backgrounds' folder path
-bkg_path = os.path.join(game_path, "backgrounds")
-menu_path = os.path.join(game_path, "menu")
+bkg_path = os.path.join(main_path, "backgrounds")
+# direct menu folder path containing all menus
+menu_path = os.path.join(main_path, "menu")
+# direct music folder path for all music
+music_path = os.path.join(main_path, "music")
+
 
 # initialize and create window
 pygame.init()
@@ -28,8 +32,10 @@ GREEN = (28, 210, 28)
 BLUE = (173, 216, 230)
 RED = (255, 144, 144)
 
+# default defined globals
 solid_color_choice = WHITE
 background_image_choice = False
+selected_music = os.path.join(music_path, "Alexander Ehlers - Warped.mp3")
 
 # Font definitions
 font_size = 36
@@ -151,10 +157,8 @@ def set_background_solid():
 def set_background_artwork():
 	global background_image_choice
 	global solid_color_choice
-	# hardcode menu choices
-	# 1. Cave
-	# 2. Space
-	# 3. Viking
+
+	# menu located in file
 	artwork_background_choice = display_menu(os.path.join(menu_path, "background_artwork_choices.txt"))
 
 	if (artwork_background_choice == 1):
@@ -193,10 +197,30 @@ def set_game_background():
 		font_color = BLACK
 		font_color_selected = WHITE
 
+def choose_music():
+	global selected_music
+
+	music_choice = display_menu(os.path.join(menu_path, "music_menu.txt"))
+
+	# Warped (default)
+	if (music_choice == 1):
+		selected_music = os.path.join(music_path, "Alexander Ehlers - Warped.mp3")
+	# Spacetime
+	elif (music_choice == 2):
+		selected_music = os.path.join(music_path, "Alexander Ehlers - Spacetime.mp3")
+	# Twists
+	elif (music_choice == 3):
+		selected_music = os.path.join(music_path, "Alexander Ehlers - Twists.mp3")
+	# Flags
+	elif (music_choice == 4):
+		selected_music = os.path.join(music_path, "Alexander Ehlers - Flags.mp3")
 
 # Game Loop
 running = True
 while running:
+	pygame.mixer.music.load(selected_music)
+	pygame.mixer.music.play(-1)
+
 	# Display menu
 	game_state = display_menu(os.path.join(menu_path, "menu.txt"))
 
@@ -204,7 +228,7 @@ while running:
 	#	1. Choose Game
 	#	2. Play Game
 	#	3. Choose Background
-	#	4. Pick Music (placeholder)
+	#	4. Choose Music
 	#	5. Create new Game (placeholder)
 	#	6. Load Game to Edit (placeholder)
 	#	7. Quit
@@ -224,6 +248,7 @@ while running:
 			set_background_artwork()
 	elif (game_state == 4):
 		print("picking music")
+		choose_music()
 	elif (game_state == 5):
 		print("creating new game")
 	elif (game_state == 5):
